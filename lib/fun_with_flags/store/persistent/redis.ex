@@ -43,7 +43,7 @@ defmodule FunWithFlags.Store.Persistent.Redis do
 
     result = Redix.pipeline(@conn, [
       ["MULTI"],
-      ["SADD", @flags_set, flag_name],
+      ["SADD", @flags_set, to_string(flag_name)],
       ["HSET" | [format(flag_name) | data]],
       ["EXEC"]
     ])
@@ -88,7 +88,7 @@ defmodule FunWithFlags.Store.Persistent.Redis do
   def delete(flag_name) do
     result = Redix.pipeline(@conn, [
       ["MULTI"],
-      ["SREM", @flags_set, flag_name],
+      ["SREM", @flags_set, to_string(flag_name)],
       ["DEL", format(flag_name)],
       ["EXEC"]
     ])
